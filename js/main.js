@@ -26,6 +26,14 @@ const closeModal = () => {
 modalClose.addEventListener('click', closeModal);
 buttonCart.addEventListener('click', openModal);
 
+//ДЗ
+document.body.addEventListener('click', (event) => {
+	const target = event.target;
+	if(target.classList.contains('overlay')) {
+		closeModal()
+	}
+})
+
 // scroll smooth
 {
 	const scrollLinks = document.querySelectorAll('a.scroll-link');
