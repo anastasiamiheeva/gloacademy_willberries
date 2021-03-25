@@ -51,9 +51,12 @@ modalCart.addEventListener('click', (event) => {
 
 //goods
 
-const more = document.querySelector('.more');
-const navigationLinks = document.querySelectorAll('.navigation-link');
+const navigationLinks = document.querySelectorAll('.navigation-link:not(.view-all)');//класс исключение 
 const longGoodsList = document.querySelector('.long-goods-list');
+const viewAll = document.querySelectorAll('.view-all');
+const showAcsessories = document.querySelectorAll('.show-acsessories');
+const showClothing = document.querySelectorAll('.show-clothing')
+
 
 const getGoods = async function() {
 	const result = await fetch('db/db.json');
@@ -87,10 +90,16 @@ const renderCards = data => {
 	document.body.classList.add('show-goods')
 };
 
-more.addEventListener('click', (event) => {
+const showAll = (event) => {
 	event.preventDefault();
 	getGoods().then(renderCards); 
-});
+}
+
+viewAll.forEach((elem) => {
+	elem.addEventListener('click', showAll)
+})
+
+
 
 const filterCards = (field, value) => {
 	getGoods().then(data => {
@@ -107,9 +116,31 @@ navigationLinks.forEach(link => {
 		event.preventDefault();
 		const field = link.dataset.field;
 		const value = link.textContent;
+		//if(!field) return; //если нет класса исключения в navigationLinks
 		filterCards(field, value);
 	})
 });
+
+showAcsessories.forEach(item => {
+	item.addEventListener('click', e => {
+		e.preventDefault();
+		filterCards('category', 'Accessories');
+	})
+});
+
+showClothing.forEach(item => {
+	item.addEventListener('click', e => {
+		e.preventDefault();
+		filterCards('category', 'Clothing');
+	})
+});
+
+
+
+
+
+
+
 
 
 
