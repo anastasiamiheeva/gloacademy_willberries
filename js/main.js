@@ -229,6 +229,40 @@ showClothing.forEach(item => {
 	})
 });
 
+//server
+
+const modalForm = document.querySelector('.modal-form');
+
+const postData = dataUser => fetch('server.php', {
+  method: 'POST',
+  body: dataUser,
+});
+
+modalForm.addEventListener('submit', event => {
+  event.preventDefault();
+
+	const formData = new FormData(modalForm);// формирует спец объект,который понимает сервер, нужно указать из какой формы брать данные
+	formData.append('cart', JSON.stringify(cart.cartGoods))
+
+	postData(formData)
+		.then(response => {
+			if(!response.ok) {
+				throw new Error(response.status)
+			}
+			alert('Ваш заказ успешно отправлен, с Вами свяжутся в ближайшее время');
+			console.log(response.statusText);
+		})
+		.catch(err => {
+			alert('К сожалению произошла ошибка, повторите попытку позже')
+			console.log(err);
+		})
+		.finally(() => {
+			closeModal();
+			modalForm.reset();
+			cart.cartGoods.length = 0;
+		});
+})
+
 
 
 
